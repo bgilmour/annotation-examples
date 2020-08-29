@@ -18,5 +18,5 @@ public @interface CustomTypeEncoding {
 
   String keyValSep() default "";
 
-  String encoding() default "";
+  String encoder() default "";
 }

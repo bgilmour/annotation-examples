@@ -7,16 +7,16 @@ import java.util.Objects;
 import com.langtoun.annotation_examples.annotations.CustomTypeEncoding;
 import com.langtoun.annotation_examples.annotations.Property;
 
-@CustomTypeEncoding(prefix = "{", suffix = "}", fieldSep = ",", keyValSep = ":", encoding = "gql")
+@CustomTypeEncoding(prefix = "{", suffix = "}", fieldSep = ",", keyValSep = ":", encoder = "gql")
 public class Simple {
 
-  @Property(json = "json_str", xml = "xml_str", encoding = "json")
+  @Property(json = "json_str", xml = "xml_str", encoding = FieldEncodingType.JSON)
   private String string;
 
-  @Property(json = "json_int", encoding = "xml+urlencoded")
+  @Property(json = "json_int", encoding = FieldEncodingType.XML_URLENCODED)
   private Integer integer;
 
-  @Property(xml = "xml_list", encoding = "base64")
+  @Property(xml = "xml_list", encoding = FieldEncodingType.BASE64)
   private List<String> list;
 
   public Simple() {
