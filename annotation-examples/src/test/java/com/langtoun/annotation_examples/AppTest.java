@@ -24,7 +24,7 @@ public class AppTest extends TestCase {
    *
    * @param testName name of the test case
    */
-  public AppTest(String testName) {
+  public AppTest(final String testName) {
     super(testName);
   }
 
@@ -48,12 +48,12 @@ public class AppTest extends TestCase {
     simple.getList().add("three");
     System.out.println("simple = " + simple);
 
-    Class<?> clazz = Simple.class;
-    CustomTypeEncoding encoding = clazz.getAnnotation(CustomTypeEncoding.class);
+    final Class<?> clazz = simple.getClass();
+    final CustomTypeEncoding encoding = clazz.getAnnotation(CustomTypeEncoding.class);
     if (encoding != null) {
-      System.out.printf("  @%s [prefix=%s, suffix=%s, fieldSep=%s, keyValSep=%s, encoding=%s]\n",
+      System.out.printf("  @%s [prefix=%s suffix=%s fieldSep=%s keyValSep=%s encoder=%s]\n",
           encoding.annotationType().getSimpleName(), encoding.prefix(), encoding.suffix(), encoding.fieldSep(),
-          encoding.keyValSep(), encoding.encoding());
+          encoding.keyValSep(), encoding.encoder());
     }
 
     System.out.println("---- NESTED FOR LOOPS ----");
@@ -63,14 +63,15 @@ public class AppTest extends TestCase {
           isProperty ? "property []" : "other");
       if (isProperty) {
         for (final Property property : field.getAnnotationsByType(Property.class)) {
-          System.out.printf("    @%s [json=%s, xml=%s, encoding=%s]\n", property.annotationType().getSimpleName(), property.json(),
-              property.xml(), property.encoding());
+          System.out.printf("    @%s [json=%s xml=%s encoding=%s]\n", property.annotationType().getSimpleName(), property.json(),
+              property.xml(), property.encoding().encodingType);
         }
       }
     }
 
     System.out.println("---- MAP / REDUCE ----");
-    Map<Field, Property> propertyFields = Stream.of(clazz.getDeclaredFields()).filter(f -> f.isAnnotationPresent(Property.class))
+    final Map<Field, Property> propertyFields = Stream.of(clazz.getDeclaredFields())
+        .filter(f -> f.isAnnotationPresent(Property.class))
         .collect(Collectors.toMap(Function.identity(), f -> f.getAnnotation(Property.class)));
 
     for (final Entry<Field, Property> propertyField : propertyFields.entrySet()) {
@@ -82,8 +83,8 @@ public class AppTest extends TestCase {
       } catch (IllegalArgumentException | IllegalAccessException e) {
         System.out.printf("ERROR: %s\n", e);
       }
-      System.out.printf("    @%s [json=%s, xml=%s, encoding=%s]\n", property.annotationType().getSimpleName(), property.json(),
-          property.xml(), property.encoding());
+      System.out.printf("    @%s [json=%s xml=%s encoding=%s]\n", property.annotationType().getSimpleName(), property.json(),
+          property.xml(), property.encoding().encodingType);
     }
   }
 }
