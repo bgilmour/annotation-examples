@@ -8,7 +8,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.langtoun.annotation_examples.annotations.CustomTypeEncoding;
-import com.langtoun.annotation_examples.annotations.Property;
+import com.langtoun.annotation_examples.annotations.TypeDefinition;
+import com.langtoun.annotation_examples.annotations.TypeProperty;
 import com.langtoun.annotation_examples.types.Simple;
 
 import junit.framework.Test;
@@ -49,42 +50,48 @@ public class AppTest extends TestCase {
     System.out.println("simple = " + simple);
 
     final Class<?> clazz = simple.getClass();
-    final CustomTypeEncoding encoding = clazz.getAnnotation(CustomTypeEncoding.class);
-    if (encoding != null) {
-      System.out.printf("  @%s [prefix=%s suffix=%s fieldSep=%s keyValSep=%s encoder=%s]\n",
-          encoding.annotationType().getSimpleName(), encoding.prefix(), encoding.suffix(), encoding.fieldSep(),
-          encoding.keyValSep(), encoding.encoder());
-    }
+    final TypeDefinition typeDefinition = clazz.getAnnotation(TypeDefinition.class);
+    if (typeDefinition != null) {
+      System.out.println("--- TYPE DEFINITION ---");
+      System.out.printf("@%s [isList=%b encoder=%s]\n", typeDefinition.annotationType().getSimpleName(), typeDefinition.isList(),
+          typeDefinition.encoding());
+      final CustomTypeEncoding encoding = typeDefinition.encoding();
+      if (encoding != null) {
+        System.out.printf("  @%s [prefix=%s suffix=%s fieldSep=%s keyValSep=%s encoder=%s]\n",
+            encoding.annotationType().getSimpleName(), encoding.prefix(), encoding.suffix(), encoding.fieldSep(),
+            encoding.keyValSep(), encoding.encoder());
+      }
 
-    System.out.println("---- NESTED FOR LOOPS ----");
-    for (final Field field : clazz.getDeclaredFields()) {
-      final boolean isProperty = field.isAnnotationPresent(Property.class);
-      System.out.printf("  field: %s [%s] [%s]\n", field.getName(), field.isAccessible() ? "public" : "private",
-          isProperty ? "property []" : "other");
-      if (isProperty) {
-        for (final Property property : field.getAnnotationsByType(Property.class)) {
-          System.out.printf("    @%s [json=%s xml=%s encoding=%s]\n", property.annotationType().getSimpleName(), property.json(),
-              property.xml(), property.encoding().encodingType);
+      System.out.println("  --- NESTED FOR LOOPS ---");
+      for (final Field field : clazz.getDeclaredFields()) {
+        final boolean isProperty = field.isAnnotationPresent(TypeProperty.class);
+        System.out.printf("  field: %s [%s] [%s]\n", field.getName(), field.isAccessible() ? "public" : "private",
+            isProperty ? "property []" : "other");
+        if (isProperty) {
+          for (final TypeProperty property : field.getAnnotationsByType(TypeProperty.class)) {
+            System.out.printf("    @%s [json=%s xml=%s encoding=%s]\n", property.annotationType().getSimpleName(), property.json(),
+                property.xml(), property.encoding().encodingType);
+          }
         }
       }
-    }
 
-    System.out.println("---- MAP / REDUCE ----");
-    final Map<Field, Property> propertyFields = Stream.of(clazz.getDeclaredFields())
-        .filter(f -> f.isAnnotationPresent(Property.class))
-        .collect(Collectors.toMap(Function.identity(), f -> f.getAnnotation(Property.class)));
+      System.out.println("  --- MAP / REDUCE ---");
+      final Map<Field, TypeProperty> propertyFields = Stream.of(clazz.getDeclaredFields())
+          .filter(f -> f.isAnnotationPresent(TypeProperty.class))
+          .collect(Collectors.toMap(Function.identity(), f -> f.getAnnotation(TypeProperty.class)));
 
-    for (final Entry<Field, Property> propertyField : propertyFields.entrySet()) {
-      final Field field = propertyField.getKey();
-      final Property property = propertyField.getValue();
-      field.setAccessible(true);
-      try {
-        System.out.printf("  field: %s = %s\n", field.getName(), field.get(simple));
-      } catch (IllegalArgumentException | IllegalAccessException e) {
-        System.out.printf("ERROR: %s\n", e);
+      for (final Entry<Field, TypeProperty> propertyField : propertyFields.entrySet()) {
+        final Field field = propertyField.getKey();
+        final TypeProperty property = propertyField.getValue();
+        field.setAccessible(true);
+        try {
+          System.out.printf("  field: %s = %s\n", field.getName(), field.get(simple));
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+          System.out.printf("ERROR: %s\n", e);
+        }
+        System.out.printf("    @%s [json=%s xml=%s encoding=%s]\n", property.annotationType().getSimpleName(), property.json(),
+            property.xml(), property.encoding().encodingType);
       }
-      System.out.printf("    @%s [json=%s xml=%s encoding=%s]\n", property.annotationType().getSimpleName(), property.json(),
-          property.xml(), property.encoding().encodingType);
     }
   }
 }

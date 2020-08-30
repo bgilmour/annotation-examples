@@ -4,19 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.langtoun.annotation_examples.annotations.CustomTypeEncoding;
-import com.langtoun.annotation_examples.annotations.Property;
+import com.langtoun.annotation_examples.annotations.TypeDefinition;
+import com.langtoun.annotation_examples.annotations.TypeProperty;
 
-@CustomTypeEncoding(prefix = "{", suffix = "}", fieldSep = ",", keyValSep = ":", encoder = "gql")
+//@TypeDefinition(isList = false, encoding = @CustomTypeEncoding(prefix = "{", suffix = "}", fieldSep = ",", keyValSep = ":"))
+//@TypeDefinition(isList = false, encoding = @CustomTypeEncoding(encoder = CustomTypeEncoder.GQL))
+@TypeDefinition(isList = true)
+//@TypeDefinition
 public class Simple {
 
-  @Property(json = "json_str", xml = "xml_str", encoding = FieldEncodingType.JSON)
+  @TypeProperty(json = "json_str", xml = "xml_str", encoding = FieldEncodingType.JSON)
   private String string;
 
-  @Property(json = "json_int", encoding = FieldEncodingType.XML_URLENCODED)
+  @TypeProperty(json = "json_int", encoding = FieldEncodingType.XML_URLENCODED)
   private Integer integer;
 
-  @Property(xml = "xml_list", encoding = FieldEncodingType.BASE64)
+  @TypeProperty(xml = "xml_list", encoding = FieldEncodingType.BASE64)
   private List<String> list;
 
   public Simple() {

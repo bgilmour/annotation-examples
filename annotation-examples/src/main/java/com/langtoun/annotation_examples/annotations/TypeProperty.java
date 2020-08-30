@@ -10,7 +10,7 @@ import com.langtoun.annotation_examples.types.FieldEncodingType;
 
 @Retention(RUNTIME)
 @Target(FIELD)
-public @interface Property {
+public @interface TypeProperty {
 
   /**
    * The name of the annotated field as it should appear in a JSON serialization.
