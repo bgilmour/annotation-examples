@@ -2,7 +2,7 @@ package com.langtoun.annotation_examples.types;
 
 public enum FieldEncodingType {
 
-  UNKNOWN(""),
+  STD(""),
   BASE64("base64"),
   JSON("json"),
   JSON_URL_ENCODED("json+urlencoded"),

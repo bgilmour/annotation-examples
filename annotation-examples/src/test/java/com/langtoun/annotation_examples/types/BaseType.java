@@ -4,22 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.langtoun.annotation_examples.annotations.CustomTypeEncoding;
-import com.langtoun.annotation_examples.annotations.Property;
+import com.langtoun.annotation_examples.annotations.TypeDefinition;
+import com.langtoun.annotation_examples.annotations.TypeProperty;
 
-@CustomTypeEncoding(prefix = "{", suffix = "}", fieldSep = ",", keyValSep = ":", encoder = "gql")
-public class Simple {
+//@TypeDefinition(isList = false, encoding = @CustomTypeEncoding(prefix = "{", suffix = "}", fieldSep = ",", keyValSep = ":"))
+//@TypeDefinition(isList = false, encoding = @CustomTypeEncoding(encoder = CustomTypeEncoder.GQL))
+//@TypeDefinition(isList = true)
+@TypeDefinition({ "string", "integer", "list" })
+public class BaseType {
 
-  @Property(json = "json_str", xml = "xml_str", encoding = FieldEncodingType.JSON)
+  @TypeProperty(json = "json_str", xml = "xml_str", encoding = FieldEncodingType.JSON)
   private String string;
 
-  @Property(json = "json_int", encoding = FieldEncodingType.XML_URLENCODED)
+  @TypeProperty(json = "json_int", encoding = FieldEncodingType.XML_URLENCODED)
   private Integer integer;
 
-  @Property(xml = "xml_list", encoding = FieldEncodingType.BASE64)
+  @TypeProperty(xml = "xml_list", encoding = FieldEncodingType.BASE64)
   private List<String> list;
 
-  public Simple() {
+  public BaseType() {
     list = new ArrayList<>();
   }
 
@@ -48,13 +51,13 @@ public class Simple {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Simple other = (Simple) obj;
+    BaseType other = (BaseType) obj;
     return Objects.equals(integer, other.integer) && Objects.equals(list, other.list) && Objects.equals(string, other.string);
   }
 
   @Override
   public String toString() {
-    return String.format("Simple [string=%s, integer=%s, list=%s]", string, integer, list);
+    return String.format("BaseType [string=%s, integer=%s, list=%s]", string, integer, list);
   }
 
 }
