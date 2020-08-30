@@ -18,7 +18,7 @@ public @interface TypeDefinition {
    * 
    * @return an array of field names
    */
-  String[] value();
+  FieldOrder fieldOrder() default @FieldOrder;
 
   /**
    * Does the annotated type definition represents a list type.

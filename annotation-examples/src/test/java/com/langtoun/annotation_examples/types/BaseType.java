@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.langtoun.annotation_examples.annotations.FieldOrder;
 import com.langtoun.annotation_examples.annotations.TypeDefinition;
 import com.langtoun.annotation_examples.annotations.TypeProperty;
 
 //@TypeDefinition(isList = false, encoding = @CustomTypeEncoding(prefix = "{", suffix = "}", fieldSep = ",", keyValSep = ":"))
 //@TypeDefinition(isList = false, encoding = @CustomTypeEncoding(encoder = CustomTypeEncoder.GQL))
 //@TypeDefinition(isList = true)
-@TypeDefinition({ "string", "integer", "list" })
+@TypeDefinition(fieldOrder = @FieldOrder({ "string", "integer", "list" }))
 public class BaseType {
 
   @TypeProperty(json = "json_str", xml = "xml_str", encoding = FieldEncodingType.JSON)

@@ -1,12 +1,14 @@
 package com.langtoun.annotation_examples.types;
 
+import com.langtoun.annotation_examples.annotations.FieldOrder;
 import com.langtoun.annotation_examples.annotations.TypeDefinition;
 import com.langtoun.annotation_examples.annotations.TypeProperty;
 
 //@TypeDefinition(isList = false, encoding = @CustomTypeEncoding(prefix = "{", suffix = "}", fieldSep = ",", keyValSep = ":"))
 //@TypeDefinition(isList = false, encoding = @CustomTypeEncoding(encoder = CustomTypeEncoder.GQL))
 //@TypeDefinition(isList = true)
-@TypeDefinition({ "dbl", "list" })
+@TypeDefinition(fieldOrder = @FieldOrder({ "dbl", "list", "integer", "string" }))
+//@TypeDefinition
 public class DerivedType extends BaseType {
 
   @TypeProperty

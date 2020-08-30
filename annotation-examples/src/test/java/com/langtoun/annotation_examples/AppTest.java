@@ -93,27 +93,6 @@ public class AppTest extends TestCase {
             encoding.keyValSep(), encoding.encoder());
       }
 
-      System.out.println("  --- NESTED FOR LOOPS ---");
-      for (final Class<?> clz : superclasses) {
-        for (final Field field : clz.getDeclaredFields()) {
-          final boolean isProperty = field.isAnnotationPresent(TypeProperty.class);
-          field.setAccessible(true);
-          try {
-            System.out.printf("  field: %s [%s] [%s] = %s\n", field.getName(), field.isAccessible() ? "public" : "private",
-                isProperty ? "property" : "other", field.get(object));
-          } catch (IllegalArgumentException | IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-          }
-          if (isProperty) {
-            for (final TypeProperty property : field.getAnnotationsByType(TypeProperty.class)) {
-              System.out.printf("    @%s [json=%s xml=%s encoding=%s]\n", property.annotationType().getSimpleName(),
-                  property.json(), property.xml(), property.encoding().encodingType);
-            }
-          }
-        }
-      }
-
       System.out.println("  --- MAP / REDUCE ---");
 //      final Map<String, Pair<Field, TypeProperty>> propertyFields = ExampleUtils.getDeclaredFieldsWithTypeProperty(clazz);
 //      final Map<String, Pair<Field, TypeProperty>> propertyFields = ExampleUtils.getSuperclassFieldsWithTypeProperty(clazz);
@@ -121,7 +100,10 @@ public class AppTest extends TestCase {
 
 //      final String[] fieldOrder = { "string", "integer", "list", "dbl" };
 
-      for (final String fieldName : typeDefinition.value()) {
+      final String[] fieldOrder = typeDefinition.fieldOrder().value().length > 0 ? typeDefinition.fieldOrder().value()
+          : propertyFields.keySet().toArray(new String[] {});
+
+      for (final String fieldName : fieldOrder) {
         final Pair<Field, TypeProperty> entry = propertyFields.get(fieldName);
         if (entry != null) {
           final Field field = entry.getKey();
