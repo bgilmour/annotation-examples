@@ -1,12 +1,7 @@
 package com.langtoun.annotation_examples.annotations;
 
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Retention;
-
 import com.langtoun.annotation_examples.types.CustomTypeEncoder;
 
-@Retention(RUNTIME)
 public @interface CustomTypeEncoding {
 
   /**
