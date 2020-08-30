@@ -1,7 +1,12 @@
 package com.langtoun.annotation_examples.annotations;
 
+import static java.lang.annotation.ElementType.METHOD;
+
+import java.lang.annotation.Target;
+
 import com.langtoun.annotation_examples.types.CustomTypeEncoder;
 
+@Target(METHOD)
 public @interface CustomTypeEncoding {
 
   /**

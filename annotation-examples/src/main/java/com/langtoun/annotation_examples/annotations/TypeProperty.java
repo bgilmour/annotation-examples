@@ -32,5 +32,5 @@ public @interface TypeProperty {
    * 
    * @return the type of encoding for the annotated field
    */
-  FieldEncodingType encoding() default FieldEncodingType.UNKNOWN;
+  FieldEncodingType encoding() default FieldEncodingType.STD;
 }

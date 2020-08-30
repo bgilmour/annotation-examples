@@ -9,9 +9,9 @@ import com.langtoun.annotation_examples.annotations.TypeProperty;
 
 //@TypeDefinition(isList = false, encoding = @CustomTypeEncoding(prefix = "{", suffix = "}", fieldSep = ",", keyValSep = ":"))
 //@TypeDefinition(isList = false, encoding = @CustomTypeEncoding(encoder = CustomTypeEncoder.GQL))
-@TypeDefinition(isList = true)
-//@TypeDefinition
-public class Simple {
+//@TypeDefinition(isList = true)
+@TypeDefinition({ "string", "integer", "list" })
+public class BaseType {
 
   @TypeProperty(json = "json_str", xml = "xml_str", encoding = FieldEncodingType.JSON)
   private String string;
@@ -22,7 +22,7 @@ public class Simple {
   @TypeProperty(xml = "xml_list", encoding = FieldEncodingType.BASE64)
   private List<String> list;
 
-  public Simple() {
+  public BaseType() {
     list = new ArrayList<>();
   }
 
@@ -51,13 +51,13 @@ public class Simple {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Simple other = (Simple) obj;
+    BaseType other = (BaseType) obj;
     return Objects.equals(integer, other.integer) && Objects.equals(list, other.list) && Objects.equals(string, other.string);
   }
 
   @Override
   public String toString() {
-    return String.format("Simple [string=%s, integer=%s, list=%s]", string, integer, list);
+    return String.format("BaseType [string=%s, integer=%s, list=%s]", string, integer, list);
   }
 
 }
